@@ -1,89 +1,147 @@
 import { WORD_PACKS } from "./words.js";
 
-const categoryToggles = document.getElementById("categoryToggles");
+const playerList = document.getElementById("playerList");
+const nameInput = document.getElementById("nameInput");
+const addPlayerBtn = document.getElementById("addPlayerBtn");
+
+const categoryList = document.getElementById("categoryList");
 const startBtn = document.getElementById("startBtn");
-const playerNamesInput = document.getElementById("playerNames");
 
 const setupDiv = document.getElementById("setup");
 const revealDiv = document.getElementById("reveal");
 
 const playerLabel = document.getElementById("playerLabel");
 const card = document.getElementById("card");
-const cardText = document.getElementById("cardText");
+const cardWord = document.getElementById("cardWord");
+const cardHint = document.getElementById("cardHint");
 const nextBtn = document.getElementById("nextBtn");
 
 let players = [];
+let categories = [];
 let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
-// Build category toggles (ALL ON by default)
-const categories = [...new Set(WORD_PACKS.map(w => w.category))];
-categories.forEach(cat => {
-  const wrapper = document.createElement("label");
-  wrapper.style.display = "block";
+/* -------------------------
+   PLAYER MANAGEMENT (PILLS)
+-------------------------- */
 
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.value = cat;
-  checkbox.checked = true; // <-- ALL ON BY DEFAULT
+function renderPlayers() {
+  playerList.innerHTML = "";
+  players.forEach((name, i) => {
+    const pill = document.createElement("div");
+    pill.className = "pill";
+    pill.textContent = name;
 
-  wrapper.appendChild(checkbox);
-  wrapper.append(" " + cat);
-  categoryToggles.appendChild(wrapper);
-});
+    const x = document.createElement("button");
+    x.textContent = "×";
+    x.onclick = () => {
+      players.splice(i, 1);
+      renderPlayers();
+    };
 
-startBtn.addEventListener("click", () => {
-  players = playerNamesInput.value
-    .split("\n")
-    .map(n => n.trim())
-    .filter(n => n.length > 0);
+    pill.appendChild(x);
+    playerList.appendChild(pill);
+  });
+}
 
+addPlayerBtn.onclick = () => {
+  const name = nameInput.value.trim();
+  if (name.length > 0) {
+    players.push(name);
+    nameInput.value = "";
+    renderPlayers();
+  }
+};
+
+/* -------------------------
+   CATEGORY TOGGLES (PILLS)
+-------------------------- */
+
+const uniqueCats = [...new Set(WORD_PACKS.map(w => w.category))];
+categories = [...uniqueCats]; // all ON by default
+
+function renderCategories() {
+  categoryList.innerHTML = "";
+
+  uniqueCats.forEach(cat => {
+    const pill = document.createElement("div");
+    pill.className = "pill";
+    pill.textContent = cat;
+
+    const x = document.createElement("button");
+    x.textContent = categories.includes(cat) ? "✓" : "×";
+    x.style.background = categories.includes(cat) ? "#090" : "#900";
+
+    x.onclick = () => {
+      if (categories.includes(cat)) {
+        categories = categories.filter(c => c !== cat);
+      } else {
+        categories.push(cat);
+      }
+      renderCategories();
+    };
+
+    pill.appendChild(x);
+    categoryList.appendChild(pill);
+  });
+}
+
+renderCategories();
+
+/* -------------------------
+   START GAME
+-------------------------- */
+
+startBtn.onclick = () => {
   if (players.length < 3) {
     alert("Need at least 3 players");
     return;
   }
 
-  const selectedCategories = [...categoryToggles.querySelectorAll("input:checked")]
-    .map(c => c.value);
-
-  if (selectedCategories.length === 0) {
+  if (categories.length === 0) {
     alert("Select at least one category");
     return;
   }
 
-  const pool = WORD_PACKS.filter(w => selectedCategories.includes(w.category));
+  const pool = WORD_PACKS.filter(w => categories.includes(w.category));
 
   chosenWord = pool[Math.floor(Math.random() * pool.length)];
   impostorIndex = Math.floor(Math.random() * players.length);
 
+  currentIndex = 0;
+
   setupDiv.classList.add("hidden");
   revealDiv.classList.remove("hidden");
 
-  currentIndex = 0;
   showPlayer();
-});
+};
+
+/* -------------------------
+   SHOW PLAYER CARD
+-------------------------- */
 
 function showPlayer() {
   const name = players[currentIndex];
   playerLabel.textContent = `Player: ${name}`;
 
-  cardText.textContent = "Hold to reveal";
+  cardWord.textContent = "Hold to reveal";
+  cardHint.textContent = "";
 
   const isImpostor = currentIndex === impostorIndex;
-  const secret = isImpostor
-    ? `IMPOSTOR\nHint: ${chosenWord.hint}`
-    : chosenWord.word;
+  const word = isImpostor ? "IMPOSTOR" : chosenWord.word;
+  const hint = isImpostor ? chosenWord.hint : "";
 
-  // Hold-to-reveal behavior
   const show = () => {
     card.classList.add("revealed");
-    cardText.textContent = secret;
+    cardWord.textContent = word;
+    cardHint.textContent = hint;
   };
 
   const hide = () => {
     card.classList.remove("revealed");
-    cardText.textContent = "Hold to reveal";
+    cardWord.textContent = "Hold to reveal";
+    cardHint.textContent = "";
   };
 
   card.onmousedown = show;
@@ -93,7 +151,11 @@ function showPlayer() {
   card.ontouchend = hide;
 }
 
-nextBtn.addEventListener("click", () => {
+/* -------------------------
+   NEXT PLAYER / END GAME
+-------------------------- */
+
+nextBtn.onclick = () => {
   currentIndex++;
 
   if (currentIndex >= players.length) {
@@ -122,5 +184,4 @@ nextBtn.addEventListener("click", () => {
   }
 
   showPlayer();
-});
-
+};
