@@ -22,6 +22,15 @@ let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
+const neonColors = ["#0ff", "#ff00ff", "#39ff14", "#ff0080", "#ffea00"];
+
+const categoryEmojis = {
+  "Animals": "🐾",
+  "Food": "🍽️",
+  "Places": "📍",
+  "Objects": "🎒"
+};
+
 /* -------------------------
    PLAYER MANAGEMENT (PILLS)
 -------------------------- */
@@ -57,13 +66,6 @@ addPlayerBtn.onclick = () => {
 /* -------------------------
    CATEGORY TOGGLES (PILLS)
 -------------------------- */
-
-const categoryEmojis = {
-  "Animals": "🐾",
-  "Food": "🍽️",
-  "Places": "📍",
-  "Objects": "🎒"
-};
 
 const uniqueCats = [...new Set(WORD_PACKS.map(w => w.category))];
 categories = [...uniqueCats]; // all ON by default
@@ -144,13 +146,20 @@ function showPlayer() {
   const hint = isImpostor ? chosenWord.hint : "";
 
   const show = () => {
+    const random = neonColors[Math.floor(Math.random() * neonColors.length)];
+    card.style.background = random;
+    card.style.boxShadow = `0 0 20px ${random}`;
     card.classList.add("revealed");
+
     cardWord.textContent = word;
     cardHint.textContent = hint;
   };
 
   const hide = () => {
+    card.style.background = "#fff";
+    card.style.boxShadow = "0 0 10px #0ff5";
     card.classList.remove("revealed");
+
     cardWord.textContent = "Hold to reveal";
     cardHint.textContent = "";
   };
