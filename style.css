@@ -17,7 +17,6 @@ body {
   background: #ffffff;
   border-radius: 16px;
   padding: 20px 24px 28px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
   border: 2px solid #ccc; /* GREY BORDER */
 }
 
@@ -50,17 +49,15 @@ button {
   background: #fff;
   color: #000;
   border-radius: 10px;
-  transition: 0.2s;
+  transition: 0.15s;
   font-weight: 600;
 }
 
 button:hover {
-  background: #0ff;
-  color: #000;
-  box-shadow: 0 0 10px #0ff;
+  background: #e0e0e0;
 }
 
-/* Start Game button more prominent ------------------------ */
+/* Start Game button --------------------------------------- */
 
 #startBtn {
   display: block;
@@ -71,9 +68,7 @@ button:hover {
 }
 
 #startBtn:hover {
-  background: #00e676;
-  border-color: #00e676;
-  box-shadow: 0 0 10px #00e676;
+  background: #00b85c;
 }
 
 /* HIDDEN --------------------------------------------------- */
@@ -90,7 +85,7 @@ button:hover {
   margin-bottom: 8px;
 }
 
-/* PILLS (Players + Categories) ----------------------------- */
+/* PILLS ---------------------------------------------------- */
 
 .pill {
   display: inline-flex;
@@ -105,7 +100,8 @@ button:hover {
   gap: 10px;
 }
 
-/* The small round button inside each pill */
+/* Pill buttons (X / ✓) ------------------------------------ */
+
 .pill button {
   background: #ff0080;
   border: none;
@@ -119,13 +115,12 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 0.2s;
+  transition: 0.15s;
   padding: 0;
 }
 
 .pill button:hover {
-  background: #ff4da6;
-  box-shadow: 0 0 8px #ff4da6;
+  background: #d6006d;
 }
 
 /* CARD ----------------------------------------------------- */
@@ -134,7 +129,7 @@ button:hover {
   width: 300px;
   height: 220px;
   margin: 25px auto;
-  background: #0ff; /* ALWAYS NEON */
+  background: #0ff; /* DEFAULT — JS will override with random colour */
   border: 3px solid #ccc; /* GREY BORDER */
   border-radius: 16px;
   display: flex;
@@ -142,13 +137,8 @@ button:hover {
   justify-content: center;
   align-items: center;
   user-select: none;
-  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.3s;
+  transition: transform 0.3s;
   color: #000;
-  box-shadow: 0 0 20px #0ff;
-}
-
-.card.revealed {
-  /* No colour change — stays neon */
 }
 
 #cardWord {
