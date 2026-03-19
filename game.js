@@ -22,8 +22,10 @@ let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
-const neonColors = ["#0ff", "#ff00ff", "#39ff14", "#ff0080", "#ffea00"];
+/* CONSTANT NEON CARD COLOUR */
+const CARD_COLOR = "#0ff";
 
+/* CATEGORY EMOJIS */
 const categoryEmojis = {
   "Animals": "🐾",
   "Food": "🍽️",
@@ -138,6 +140,10 @@ function showPlayer() {
   const name = players[currentIndex];
   playerLabel.textContent = `Player: ${name}`;
 
+  // Always neon card
+  card.style.background = CARD_COLOR;
+  card.style.boxShadow = `0 0 20px ${CARD_COLOR}`;
+
   cardWord.textContent = "Hold to reveal";
   cardHint.textContent = "";
 
@@ -146,20 +152,13 @@ function showPlayer() {
   const hint = isImpostor ? chosenWord.hint : "";
 
   const show = () => {
-    const random = neonColors[Math.floor(Math.random() * neonColors.length)];
-    card.style.background = random;
-    card.style.boxShadow = `0 0 20px ${random}`;
     card.classList.add("revealed");
-
     cardWord.textContent = word;
     cardHint.textContent = hint;
   };
 
   const hide = () => {
-    card.style.background = "#fff";
-    card.style.boxShadow = "0 0 10px #0ff5";
     card.classList.remove("revealed");
-
     cardWord.textContent = "Hold to reveal";
     cardHint.textContent = "";
   };
@@ -176,32 +175,46 @@ function showPlayer() {
 -------------------------- */
 
 nextBtn.onclick = () => {
-  currentIndex++;
+  // Slide out animation
+  card.classList.add("slide-out");
 
-  if (currentIndex >= players.length) {
-    const starter = players[Math.floor(Math.random() * players.length)];
+  setTimeout(() => {
+    currentIndex++;
 
-    revealDiv.innerHTML = `
-      <h2>${starter} starts the conversation!</h2>
-      <button id="endGameBtn">End Game</button>
-    `;
+    if (currentIndex >= players.length) {
+      const starter = players[Math.floor(Math.random() * players.length)];
 
-    document.getElementById("endGameBtn").onclick = () => {
       revealDiv.innerHTML = `
-        <h2>Game Over</h2>
-        <p><strong>Word:</strong> ${chosenWord.word}</p>
-        <p><strong>Impostor:</strong> ${players[impostorIndex]}</p>
-        <button id="backBtn">Back to Menu</button>
+        <h2>${starter} starts the conversation!</h2>
+        <button id="endGameBtn">End Game</button>
       `;
 
-      document.getElementById("backBtn").onclick = () => {
-        revealDiv.classList.add("hidden");
-        setupDiv.classList.remove("hidden");
+      document.getElementById("endGameBtn").onclick = () => {
+        revealDiv.innerHTML = `
+          <h2>Game Over</h2>
+          <p><strong>Word:</strong> ${chosenWord.word}</p>
+          <p><strong>Impostor:</strong> ${players[impostorIndex]}</p>
+          <button id="backBtn">Back to Menu</button>
+        `;
+
+        document.getElementById("backBtn").onclick = () => {
+          revealDiv.classList.add("hidden");
+          setupDiv.classList.remove("hidden");
+        };
       };
-    };
 
-    return;
-  }
+      return;
+    }
 
-  showPlayer();
+    // Reset animation + show next player
+    card.classList.remove("slide-out");
+    card.classList.add("slide-in");
+
+    showPlayer();
+
+    setTimeout(() => {
+      card.classList.remove("slide-in");
+    }, 300);
+
+  }, 300);
 };
