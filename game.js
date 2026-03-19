@@ -58,6 +58,13 @@ addPlayerBtn.onclick = () => {
    CATEGORY TOGGLES (PILLS)
 -------------------------- */
 
+const categoryEmojis = {
+  "Animals": "🐾",
+  "Food": "🍽️",
+  "Places": "📍",
+  "Objects": "🎒"
+};
+
 const uniqueCats = [...new Set(WORD_PACKS.map(w => w.category))];
 categories = [...uniqueCats]; // all ON by default
 
@@ -67,14 +74,18 @@ function renderCategories() {
   uniqueCats.forEach(cat => {
     const pill = document.createElement("div");
     pill.className = "pill";
-    pill.textContent = cat;
 
-    const x = document.createElement("button");
-    x.textContent = categories.includes(cat) ? "✓" : "×";
-    x.style.background = categories.includes(cat) ? "#090" : "#900";
+    const emoji = categoryEmojis[cat] || "✨";
+    pill.textContent = emoji + " " + cat;
 
-    x.onclick = () => {
-      if (categories.includes(cat)) {
+    const btn = document.createElement("button");
+    const isOn = categories.includes(cat);
+
+    btn.textContent = isOn ? "✓" : "×";
+    btn.style.background = isOn ? "#00cc66" : "#ff0080";
+
+    btn.onclick = () => {
+      if (isOn) {
         categories = categories.filter(c => c !== cat);
       } else {
         categories.push(cat);
@@ -82,7 +93,7 @@ function renderCategories() {
       renderCategories();
     };
 
-    pill.appendChild(x);
+    pill.appendChild(btn);
     categoryList.appendChild(pill);
   });
 }
