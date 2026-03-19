@@ -17,7 +17,7 @@ let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
-// Build category toggles
+// Build category toggles (ALL ON by default)
 const categories = [...new Set(WORD_PACKS.map(w => w.category))];
 categories.forEach(cat => {
   const wrapper = document.createElement("label");
@@ -26,6 +26,7 @@ categories.forEach(cat => {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.value = cat;
+  checkbox.checked = true; // <-- ALL ON BY DEFAULT
 
   wrapper.appendChild(checkbox);
   wrapper.append(" " + cat);
@@ -59,6 +60,7 @@ startBtn.addEventListener("click", () => {
   setupDiv.classList.add("hidden");
   revealDiv.classList.remove("hidden");
 
+  currentIndex = 0;
   showPlayer();
 });
 
@@ -107,7 +109,13 @@ nextBtn.addEventListener("click", () => {
         <h2>Game Over</h2>
         <p><strong>Word:</strong> ${chosenWord.word}</p>
         <p><strong>Impostor:</strong> ${players[impostorIndex]}</p>
+        <button id="backBtn">Back to Menu</button>
       `;
+
+      document.getElementById("backBtn").onclick = () => {
+        revealDiv.classList.add("hidden");
+        setupDiv.classList.remove("hidden");
+      };
     };
 
     return;
