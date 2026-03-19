@@ -1,6 +1,6 @@
 import { WORD_PACKS } from "./words.js";
 
-const categorySelect = document.getElementById("categorySelect");
+const categoryToggles = document.getElementById("categoryToggles");
 const startBtn = document.getElementById("startBtn");
 const playerNamesInput = document.getElementById("playerNames");
 
@@ -8,7 +8,8 @@ const setupDiv = document.getElementById("setup");
 const revealDiv = document.getElementById("reveal");
 
 const playerLabel = document.getElementById("playerLabel");
-const secretInfo = document.getElementById("secretInfo");
+const card = document.getElementById("card");
+const cardText = document.getElementById("cardText");
 const nextBtn = document.getElementById("nextBtn");
 
 let players = [];
@@ -16,13 +17,19 @@ let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
-// Populate category dropdown
+// Build category toggles
 const categories = [...new Set(WORD_PACKS.map(w => w.category))];
 categories.forEach(cat => {
-  const opt = document.createElement("option");
-  opt.value = cat;
-  opt.textContent = cat;
-  categorySelect.appendChild(opt);
+  const wrapper = document.createElement("label");
+  wrapper.style.display = "block";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.value = cat;
+
+  wrapper.appendChild(checkbox);
+  wrapper.append(" " + cat);
+  categoryToggles.appendChild(wrapper);
 });
 
 startBtn.addEventListener("click", () => {
@@ -36,11 +43,17 @@ startBtn.addEventListener("click", () => {
     return;
   }
 
-  const selectedCategory = categorySelect.value;
-  const wordsInCategory = WORD_PACKS.filter(w => w.category === selectedCategory);
+  const selectedCategories = [...categoryToggles.querySelectorAll("input:checked")]
+    .map(c => c.value);
 
-  chosenWord = wordsInCategory[Math.floor(Math.random() * wordsInCategory.length)];
+  if (selectedCategories.length === 0) {
+    alert("Select at least one category");
+    return;
+  }
 
+  const pool = WORD_PACKS.filter(w => selectedCategories.includes(w.category));
+
+  chosenWord = pool[Math.floor(Math.random() * pool.length)];
   impostorIndex = Math.floor(Math.random() * players.length);
 
   setupDiv.classList.add("hidden");
@@ -53,20 +66,53 @@ function showPlayer() {
   const name = players[currentIndex];
   playerLabel.textContent = `Player: ${name}`;
 
-  if (currentIndex === impostorIndex) {
-    secretInfo.textContent = `You are the IMPOSTOR. Hint: ${chosenWord.hint}`;
-  } else {
-    secretInfo.textContent = `Your word: ${chosenWord.word}`;
-  }
+  cardText.textContent = "Hold to reveal";
+
+  const isImpostor = currentIndex === impostorIndex;
+  const secret = isImpostor
+    ? `IMPOSTOR\nHint: ${chosenWord.hint}`
+    : chosenWord.word;
+
+  // Hold-to-reveal behavior
+  const show = () => {
+    card.classList.add("revealed");
+    cardText.textContent = secret;
+  };
+
+  const hide = () => {
+    card.classList.remove("revealed");
+    cardText.textContent = "Hold to reveal";
+  };
+
+  card.onmousedown = show;
+  card.onmouseup = hide;
+  card.onmouseleave = hide;
+  card.ontouchstart = show;
+  card.ontouchend = hide;
 }
 
 nextBtn.addEventListener("click", () => {
   currentIndex++;
 
   if (currentIndex >= players.length) {
-    revealDiv.innerHTML = "<h2>All players have seen their roles!</h2>";
+    const starter = players[Math.floor(Math.random() * players.length)];
+
+    revealDiv.innerHTML = `
+      <h2>${starter} starts the conversation!</h2>
+      <button id="endGameBtn">End Game</button>
+    `;
+
+    document.getElementById("endGameBtn").onclick = () => {
+      revealDiv.innerHTML = `
+        <h2>Game Over</h2>
+        <p><strong>Word:</strong> ${chosenWord.word}</p>
+        <p><strong>Impostor:</strong> ${players[impostorIndex]}</p>
+      `;
+    };
+
     return;
   }
 
   showPlayer();
 });
+
