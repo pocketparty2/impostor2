@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Impostor Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Impostor</h1>
+
+  <div id="setup">
+    <h2>Players</h2>
+    <textarea id="playerNames" placeholder="One name per line"></textarea>
+
+    <h2>Category</h2>
+    <select id="categorySelect"></select>
+
+    <button id="startBtn">Start Game</button>
+  </div>
+
+  <div id="reveal" class="hidden">
+    <h2 id="playerLabel"></h2>
+    <p id="secretInfo"></p>
+    <button id="nextBtn">Next Player</button>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
