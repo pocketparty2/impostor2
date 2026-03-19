@@ -1,20 +1,20 @@
 import { WORD_PACKS } from "./words.js";
 
-const playerList = document.getElementById("playerList");
-const nameInput = document.getElementById("nameInput");
-const addPlayerBtn = document.getElementById("addPlayerBtn");
+let playerList = document.getElementById("playerList");
+let nameInput = document.getElementById("nameInput");
+let addPlayerBtn = document.getElementById("addPlayerBtn");
 
-const categoryList = document.getElementById("categoryList");
-const startBtn = document.getElementById("startBtn");
+let categoryList = document.getElementById("categoryList");
+let startBtn = document.getElementById("startBtn");
 
-const setupDiv = document.getElementById("setup");
-const revealDiv = document.getElementById("reveal");
+let setupDiv = document.getElementById("setup");
+let revealDiv = document.getElementById("reveal");
 
-const playerLabel = document.getElementById("playerLabel");
-const card = document.getElementById("card");
-const cardWord = document.getElementById("cardWord");
-const cardHint = document.getElementById("cardHint");
-const nextBtn = document.getElementById("nextBtn");
+let playerLabel = document.getElementById("playerLabel");
+let card = document.getElementById("card");
+let cardWord = document.getElementById("cardWord");
+let cardHint = document.getElementById("cardHint");
+let nextBtn = document.getElementById("nextBtn");
 
 let players = [];
 let categories = [];
@@ -22,8 +22,8 @@ let currentIndex = 0;
 let chosenWord = null;
 let impostorIndex = null;
 
-/* CONSTANT NEON CARD COLOUR */
-const CARD_COLOR = "#0ff";
+/* MULTIPLE CARD COLOURS */
+const neonColors = ["#0ff", "#ff00ff", "#39ff14", "#ff0080", "#ffea00"];
 
 /* CATEGORY EMOJIS */
 const categoryEmojis = {
@@ -34,7 +34,7 @@ const categoryEmojis = {
 };
 
 /* -------------------------
-   PLAYER MANAGEMENT (PILLS)
+   PLAYER MANAGEMENT
 -------------------------- */
 
 function renderPlayers() {
@@ -66,11 +66,11 @@ addPlayerBtn.onclick = () => {
 };
 
 /* -------------------------
-   CATEGORY TOGGLES (PILLS)
+   CATEGORY TOGGLES
 -------------------------- */
 
 const uniqueCats = [...new Set(WORD_PACKS.map(w => w.category))];
-categories = [...uniqueCats]; // all ON by default
+categories = [...uniqueCats];
 
 function renderCategories() {
   categoryList.innerHTML = "";
@@ -140,9 +140,8 @@ function showPlayer() {
   const name = players[currentIndex];
   playerLabel.textContent = `Player: ${name}`;
 
-  // Always neon card
-  card.style.background = CARD_COLOR;
-  card.style.boxShadow = `0 0 20px ${CARD_COLOR}`;
+  const random = neonColors[Math.floor(Math.random() * neonColors.length)];
+  card.style.background = random;
 
   cardWord.textContent = "Hold to reveal";
   cardHint.textContent = "";
@@ -152,13 +151,11 @@ function showPlayer() {
   const hint = isImpostor ? chosenWord.hint : "";
 
   const show = () => {
-    card.classList.add("revealed");
     cardWord.textContent = word;
     cardHint.textContent = hint;
   };
 
   const hide = () => {
-    card.classList.remove("revealed");
     cardWord.textContent = "Hold to reveal";
     cardHint.textContent = "";
   };
@@ -174,18 +171,15 @@ function showPlayer() {
    NEXT PLAYER / END GAME
 -------------------------- */
 
-nextBtn.onclick = () => {
-  // Slide out animation
+function nextPlayerHandler() {
   card.classList.add("slide-out");
 
   setTimeout(() => {
     currentIndex++;
 
     if (currentIndex >= players.length) {
-      const starter = players[Math.floor(Math.random() * players.length)];
-
       revealDiv.innerHTML = `
-        <h2>${starter} starts the conversation!</h2>
+        <h2>${players[Math.floor(Math.random() * players.length)]} starts the conversation!</h2>
         <button id="endGameBtn">End Game</button>
       `;
 
@@ -197,16 +191,12 @@ nextBtn.onclick = () => {
           <button id="backBtn">Back to Menu</button>
         `;
 
-        document.getElementById("backBtn").onclick = () => {
-          revealDiv.classList.add("hidden");
-          setupDiv.classList.remove("hidden");
-        };
+        document.getElementById("backBtn").onclick = resetToMenu;
       };
 
       return;
     }
 
-    // Reset animation + show next player
     card.classList.remove("slide-out");
     card.classList.add("slide-in");
 
@@ -217,4 +207,32 @@ nextBtn.onclick = () => {
     }, 300);
 
   }, 300);
-};
+}
+
+nextBtn.onclick = nextPlayerHandler;
+
+/* -------------------------
+   RESET TO MENU
+-------------------------- */
+
+function resetToMenu() {
+  revealDiv.classList.add("hidden");
+  setupDiv.classList.remove("hidden");
+
+  revealDiv.innerHTML = `
+    <h2 id="playerLabel"></h2>
+    <div id="card" class="card">
+      <p id="cardWord">Hold to reveal</p>
+      <p id="cardHint" class="hint"></p>
+    </div>
+    <button id="nextBtn">Next Player</button>
+  `;
+
+  playerLabel = document.getElementById("playerLabel");
+  card = document.getElementById("card");
+  cardWord = document.getElementById("cardWord");
+  cardHint = document.getElementById("cardHint");
+  nextBtn = document.getElementById("nextBtn");
+
+  nextBtn.onclick = nextPlayerHandler;
+}
