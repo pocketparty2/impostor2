@@ -66,7 +66,7 @@ button:hover {
   display: block;
   margin: 24px auto 0;
   background: #00cc66;
-  border-color: #00cc66; /* green border */
+  border-color: #00cc66;
   color: #fff;
 }
 
@@ -134,7 +134,7 @@ button:hover {
   width: 300px;
   height: 220px;
   margin: 25px auto;
-  background: #fff;
+  background: #0ff; /* ALWAYS NEON */
   border: 3px solid #ccc; /* GREY BORDER */
   border-radius: 16px;
   display: flex;
@@ -142,14 +142,13 @@ button:hover {
   justify-content: center;
   align-items: center;
   user-select: none;
-  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.3s;
   color: #000;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 0 20px #0ff;
 }
 
 .card.revealed {
-  border-color: #fff;
-  color: #000;
+  /* No colour change — stays neon */
 }
 
 #cardWord {
@@ -163,3 +162,24 @@ button:hover {
   opacity: 0.7;
   margin-top: 12px;
 }
+
+/* SLIDE ANIMATIONS ---------------------------------------- */
+
+.slide-out {
+  animation: slideOut 0.3s forwards ease;
+}
+
+.slide-in {
+  animation: slideIn 0.3s forwards ease;
+}
+
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(-80px); opacity: 0; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(80px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
