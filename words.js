@@ -5,13 +5,28 @@ export const WORD_PACKS = [
     hint: "A very large grey animal"
   },
   {
+    category: "Animals",
+    word: "Kangaroo",
+    hint: "It jumps and carries babies"
+  },
+  {
     category: "Food",
     word: "Pizza",
     hint: "Often round and cheesy"
   },
   {
+    category: "Food",
+    word: "Sushi",
+    hint: "Served cold and rolled"
+  },
+  {
     category: "Places",
-    word: "Airport",
-    hint: "People carry luggage here"
+    word: "Beach",
+    hint: "Lots of sand and water"
+  },
+  {
+    category: "Objects",
+    word: "Umbrella",
+    hint: "Useful when it rains"
   }
 ];
