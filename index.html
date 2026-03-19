@@ -10,11 +10,14 @@
   <h1>Impostor</h1>
 
   <div id="setup">
+
     <h2>Players</h2>
-    <textarea id="playerNames" placeholder="One name per line"></textarea>
+    <div id="playerList"></div>
+    <input id="nameInput" placeholder="Add player..." />
+    <button id="addPlayerBtn">Add</button>
 
     <h2>Categories</h2>
-    <div id="categoryToggles"></div>
+    <div id="categoryList"></div>
 
     <button id="startBtn">Start Game</button>
   </div>
@@ -23,7 +26,8 @@
     <h2 id="playerLabel"></h2>
 
     <div id="card" class="card">
-      <p id="cardText">Hold to reveal</p>
+      <p id="cardWord">Hold to reveal</p>
+      <p id="cardHint" class="hint"></p>
     </div>
 
     <button id="nextBtn">Next Player</button>
@@ -32,4 +36,3 @@
   <script type="module" src="game.js"></script>
 </body>
 </html>
-
