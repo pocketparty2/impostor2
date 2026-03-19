@@ -8,23 +8,25 @@ body {
   padding: 20px;
 }
 
-/* INPUTS & BUTTONS ---------------------------------------- */
+/* INPUTS -------------------------------------------------- */
 
 input {
   padding: 8px;
   margin-top: 10px;
-  border: 2px solid #0ff;
+  border: 2px solid #0ff; /* neon aqua outline */
   border-radius: 6px;
   background: #fff;
   color: #000;
 }
+
+/* BUTTONS -------------------------------------------------- */
 
 button {
   padding: 10px 20px;
   margin-top: 10px;
   font-size: 16px;
   cursor: pointer;
-  border: 2px solid #0ff;
+  border: 2px solid #0ff; /* neon outline */
   background: #fff;
   color: #000;
   border-radius: 6px;
@@ -32,7 +34,7 @@ button {
 }
 
 button:hover {
-  background: #0ff;
+  background: #0ff; /* neon aqua fill */
   color: #000;
 }
 
@@ -48,7 +50,7 @@ button:hover {
   display: inline-flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #0ff;
+  border: 2px solid #0ff; /* neon outline */
   padding: 6px 12px;
   border-radius: 20px;
   margin: 5px;
@@ -80,7 +82,7 @@ button:hover {
   height: 180px;
   margin: 20px auto;
   background: #fff;
-  border: 3px solid #0ff;
+  border: 3px solid #0ff; /* neon aqua outline */
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -92,8 +94,8 @@ button:hover {
 }
 
 .card.revealed {
-  background: #e0ffff; /* pale neon aqua */
-  border-color: #00e6e6;
+  background: #e0ffff; /* pale neon aqua glow */
+  border-color: #00e6e6; /* brighter neon */
 }
 
 #cardWord {
