@@ -1,14 +1,14 @@
 import { WORD_PACKS } from "./words.js";
 
-let playerList = document.getElementById("playerList");
-let nameInput = document.getElementById("nameInput");
-let addPlayerBtn = document.getElementById("addPlayerBtn");
+const playerList = document.getElementById("playerList");
+const nameInput = document.getElementById("nameInput");
+const addPlayerBtn = document.getElementById("addPlayerBtn");
 
-let categoryList = document.getElementById("categoryList");
-let startBtn = document.getElementById("startBtn");
+const categoryList = document.getElementById("categoryList");
+const startBtn = document.getElementById("startBtn");
 
-let setupDiv = document.getElementById("setup");
-let revealDiv = document.getElementById("reveal");
+const setupDiv = document.getElementById("setup");
+const revealDiv = document.getElementById("reveal");
 
 let playerLabel = document.getElementById("playerLabel");
 let card = document.getElementById("card");
@@ -212,13 +212,14 @@ function nextPlayerHandler() {
 nextBtn.onclick = nextPlayerHandler;
 
 /* -------------------------
-   RESET TO MENU
+   RESET TO MENU (FIXED)
 -------------------------- */
 
 function resetToMenu() {
   revealDiv.classList.add("hidden");
   setupDiv.classList.remove("hidden");
 
+  // Restore original revealDiv HTML
   revealDiv.innerHTML = `
     <h2 id="playerLabel"></h2>
     <div id="card" class="card">
@@ -228,6 +229,7 @@ function resetToMenu() {
     <button id="nextBtn">Next Player</button>
   `;
 
+  // Re-bind elements
   playerLabel = document.getElementById("playerLabel");
   card = document.getElementById("card");
   cardWord = document.getElementById("cardWord");
@@ -236,3 +238,4 @@ function resetToMenu() {
 
   nextBtn.onclick = nextPlayerHandler;
 }
+
