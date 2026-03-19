@@ -13,15 +13,19 @@
     <h2>Players</h2>
     <textarea id="playerNames" placeholder="One name per line"></textarea>
 
-    <h2>Category</h2>
-    <select id="categorySelect"></select>
+    <h2>Categories</h2>
+    <div id="categoryToggles"></div>
 
     <button id="startBtn">Start Game</button>
   </div>
 
   <div id="reveal" class="hidden">
     <h2 id="playerLabel"></h2>
-    <p id="secretInfo"></p>
+
+    <div id="card" class="card">
+      <p id="cardText">Hold to reveal</p>
+    </div>
+
     <button id="nextBtn">Next Player</button>
   </div>
 
