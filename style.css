@@ -1,36 +1,22 @@
+/* GLOBAL -------------------------------------------------- */
+
 body {
   font-family: Arial, sans-serif;
-  background: #111;
-  color: #fff;
+  background: #fafafa;
+  color: #000;
   text-align: center;
   padding: 20px;
 }
 
-/* Player + category pills */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  background: #333;
-  padding: 6px 12px;
-  border-radius: 20px;
-  margin: 5px;
-  font-size: 16px;
-}
-
-.pill button {
-  margin-left: 8px;
-  background: #900;
-  border: none;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
+/* INPUTS & BUTTONS ---------------------------------------- */
 
 input {
   padding: 8px;
   margin-top: 10px;
+  border: 2px solid #0ff;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
 }
 
 button {
@@ -38,35 +24,82 @@ button {
   margin-top: 10px;
   font-size: 16px;
   cursor: pointer;
+  border: 2px solid #0ff;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  transition: 0.2s;
 }
+
+button:hover {
+  background: #0ff;
+  color: #000;
+}
+
+/* HIDDEN --------------------------------------------------- */
 
 .hidden {
   display: none;
 }
 
-/* Card */
+/* PILLS (Players + Categories) ----------------------------- */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #0ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin: 5px;
+  font-size: 16px;
+  color: #000;
+}
+
+.pill button {
+  margin-left: 8px;
+  background: #ff0080; /* neon pink */
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.pill button:hover {
+  background: #ff4da6;
+}
+
+/* CARD ----------------------------------------------------- */
+
 .card {
   width: 260px;
   height: 180px;
   margin: 20px auto;
-  background: #222;
-  border: 3px solid #fff;
+  background: #fff;
+  border: 3px solid #0ff;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   user-select: none;
-  transition: background 0.2s;
+  transition: background 0.2s, border-color 0.2s;
+  color: #000;
 }
 
 .card.revealed {
-  background: #444;
+  background: #e0ffff; /* pale neon aqua */
+  border-color: #00e6e6;
 }
 
 #cardWord {
-  font-size: 26px;
+  font-size: 28px;
   margin: 0;
+  font-weight: bold;
 }
 
 .hint {
